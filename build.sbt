@@ -10,6 +10,6 @@ lazy val root = (project in file(".")).settings(
     // JSON Helpers
     "org.http4s" %% "http4s-circe" % http4sVersion,
     "io.circe" %% "circe-generic" % "0.14.5",
-    "org.typelevel" %% "munit-cats-effect-3" % "1.0.7" % Test
+    "org.typelevel" %% "munit-cats-effect" % "2.0.0-M3" % Test
   )
 )
