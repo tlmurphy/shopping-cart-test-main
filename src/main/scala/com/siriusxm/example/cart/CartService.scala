@@ -4,18 +4,18 @@ import cats.effect.{IO, Ref}
 
 object CartService {
   private def updateCart(product: Product, amount: Int, cart: Cart): Cart =
-    cart.cartItems.get(product.name) match {
+    cart.cartItems.get(product.title) match {
       case Some(foundItem) =>
         // Found item in cart, so update its amount
         Cart(
-          cart.cartItems + (product.name -> CartItem(
+          cart.cartItems + (product.title -> CartItem(
             foundItem.product,
             foundItem.amount + amount
           ))
         )
       case None =>
         // Did not find item in cart, so add a new CartItem
-        Cart(cart.cartItems + (product.name -> CartItem(product, amount)))
+        Cart(cart.cartItems + (product.title -> CartItem(product, amount)))
     }
 
   def add(product: Product, amount: Int, cartDb: Ref[IO, Cart]): IO[Cart] =
