@@ -19,7 +19,7 @@ class CartServiceSuite extends CatsEffectSuite {
 
   override def munitFixtures: List[IOFixture[_]] = List(cartFixture)
 
-  test("add") {
+  test("add a single Product") {
     val frosties = Product("Frosties", 4.99)
     CartService
       .add(frosties, 5, cartFixture())
@@ -32,6 +32,46 @@ class CartServiceSuite extends CatsEffectSuite {
           )
         )
       )
+  }
+
+  test("add multiple Products") {
+    val frosties = Product("Frosties", 4.99)
+    val cheerios = Product("Cheerios", 8.43)
+    for {
+      _ <- CartService.add(frosties, 5, cartFixture())
+      cart <- CartService.add(cheerios, 2, cartFixture())
+    } yield {
+      assertEquals(
+        cart,
+        Cart(
+          Map(
+            "Cornflakes" -> CartItem(Product("Cornflakes", 2.52), 2),
+            "Weetabix" -> CartItem(Product("Weetabix", 9.98), 1),
+            "Frosties" -> CartItem(frosties, 5),
+            "Cheerios" -> CartItem(cheerios, 2)
+          )
+        )
+      )
+    }
+  }
+
+  test("add multiple of the same product") {
+    val frosties = Product("Frosties", 4.99)
+    for {
+      _ <- CartService.add(frosties, 5, cartFixture())
+      cart <- CartService.add(frosties, 25, cartFixture())
+    } yield {
+      assertEquals(
+        cart,
+        Cart(
+          Map(
+            "Cornflakes" -> CartItem(Product("Cornflakes", 2.52), 2),
+            "Weetabix" -> CartItem(Product("Weetabix", 9.98), 1),
+            "Frosties" -> CartItem(frosties, 30)
+          )
+        )
+      )
+    }
   }
 
   test("viewCart") {
