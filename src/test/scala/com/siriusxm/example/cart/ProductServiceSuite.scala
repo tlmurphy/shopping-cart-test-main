@@ -1,16 +1,13 @@
 package com.siriusxm.example.cart
 
-import cats.effect.IO
+import cats.effect.{IO, Resource}
 import munit.CatsEffectSuite
 import munit.catseffect.IOFixture
-import org.http4s.ember.client.EmberClientBuilder
 
 class ProductServiceSuite extends CatsEffectSuite {
   private val clientFixture = ResourceSuiteLocalFixture(
     "client-fixture",
-    EmberClientBuilder
-      .default[IO]
-      .build
+    Resource.make(IO.pure(ProductApiMock.mockClient))(_ => IO.unit)
   )
 
   override def munitFixtures: List[IOFixture[_]] = List(clientFixture)

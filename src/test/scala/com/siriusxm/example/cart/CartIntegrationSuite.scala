@@ -3,14 +3,11 @@ package com.siriusxm.example.cart
 import cats.effect.{IO, Resource}
 import munit.CatsEffectSuite
 import munit.catseffect.IOFixture
-import org.http4s.ember.client.EmberClientBuilder
 
 class CartIntegrationSuite extends CatsEffectSuite {
   private val clientFixture = ResourceSuiteLocalFixture(
     "client-fixture",
-    EmberClientBuilder
-      .default[IO]
-      .build
+    Resource.make(IO.pure(ProductApiMock.mockClient))(_ => IO.unit)
   )
 
   private val cartFixture = ResourceTestLocalFixture(

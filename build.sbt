@@ -7,6 +7,7 @@ lazy val root = (project in file(".")).settings(
   name := "shopping-cart-test-main",
   libraryDependencies ++= Seq(
     "org.http4s" %% "http4s-ember-client" % http4sVersion,
+    "org.http4s" %% "http4s-dsl" % http4sVersion,
     // JSON Helpers
     "org.http4s" %% "http4s-circe" % http4sVersion,
     "io.circe" %% "circe-generic" % "0.14.5",
